@@ -1,41 +1,47 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("HomePage"),
-        backgroundColor: Colors.blueGrey,
-        // leading: Icon(Icons.home),
-        // actions: [
-        //   IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
-        //   IconButton(onPressed: () {}, icon: Icon(Icons.person)),
-        // ],
-      ),
-      endDrawer: NavigationDrawer(
-        children: [
-          DrawerHeader(
-            child: UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Colors.blueGrey),
-              accountName: Text("Name"),
-              accountEmail: Text("Email"),
-            ),
-          ),
-          ListTile(
-            onTap: () {},
-            leading: Icon(Icons.home),
-            title: Text("Homepage"),
-          ),
-          Divider(),
-          ListTile(
-            onTap: () {},
-            leading: Icon(Icons.person),
-            title: Text("Profile"),
-          ),
+        backgroundColor: Colors.white,
+        leading: Icon(Icons.home),
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.person)),
         ],
+      ),
+      endDrawer: Drawer(
+        child: NavigationDrawer(
+          selectedIndex: selectedIndex,
+          onDestinationSelected: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+            Navigator.pop(context);
+          },
+          children: [
+            NavigationDrawerDestination(
+              icon: Icon(Icons.home),
+              label: Text("Homepage"),
+            ),
+            NavigationDrawerDestination(
+              icon: Icon(Icons.person),
+              label: Text("Profile"),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -46,7 +52,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
         child: Text(
-          "Homepage",
+          selectedIndex == 0 ? "Homepage" : "Profile",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 25,
@@ -59,3 +65,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
